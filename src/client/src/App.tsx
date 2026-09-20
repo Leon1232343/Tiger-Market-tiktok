@@ -845,10 +845,10 @@ export default function App() {
 
               <div className="jarvis-card p-6 rounded-lg space-y-4 text-xs">
                 <div>
-                  <label className="text-cyan-500 uppercase block mb-1">AI Model (Google Gemini 2.5 Flash-Lite)</label>
+                  <label className="text-cyan-500 uppercase block mb-1">AI Model (Google Gemini 3.5 Flash-Lite)</label>
                   <input
                     type="text"
-                    value="google/gemini-2.5-flash-lite (Active)"
+                    value="google/gemini-3.5-flash-lite (Active)"
                     disabled
                     className="w-full bg-black border border-cyan-500/40 rounded px-3 py-2 text-cyan-400 cursor-not-allowed"
                   />
