@@ -8,37 +8,54 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const client_1 = require("@prisma/client");
 const axios_1 = __importDefault(require("axios"));
+const tiktokService_js_1 = require("./tiktokService.js");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const prisma = new client_1.PrismaClient();
 const PORT = process.env.PORT || 3000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-// Helper for AI generation via Google Gemini (using Gemini 2.5 Flash-Lite)
+// Helper for AI generation via official Google Gemini API
 async function callGemini(prompt, systemPrompt) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey)
         throw new Error('GEMINI_API_KEY not configured');
+    const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
     try {
-        const response = await axios_1.default.post('https://openrouter.ai/api/v1/chat/completions', {
-            model: process.env.GEMINI_MODEL || 'google/gemini-2.5-flash-lite',
-            messages: [
-                ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
-                { role: 'user', content: prompt }
-            ],
-            temperature: 0.7,
+        const contents = [];
+        if (systemPrompt) {
+            contents.push({
+                role: 'user',
+                parts: [{ text: `System Instructions: ${systemPrompt}` }]
+            });
+            contents.push({
+                role: 'model',
+                parts: [{ text: 'Understood.' }]
+            });
+        }
+        contents.push({
+            role: 'user',
+            parts: [{ text: prompt }]
+        });
+        const response = await axios_1.default.post(url, {
+            contents,
+            generationConfig: {
+                temperature: 0.7,
+            }
         }, {
             headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'HTTP-Referer': 'https://tiger-market.local',
-                'X-Title': 'Tiger Market Intelligence',
                 'Content-Type': 'application/json',
             },
         });
-        return response.data.choices[0].message.content;
+        const candidate = response.data?.candidates?.[0];
+        const text = candidate?.content?.parts?.[0]?.text;
+        if (!text)
+            throw new Error('Invalid response structure from Gemini API');
+        return text;
     }
     catch (error) {
-        console.error('Gemini API error:', error.response?.data || error.message);
+        console.error('Official Gemini API error:', error.response?.data || error.message);
         throw new Error('AI generation failed');
     }
 }
@@ -437,6 +454,53 @@ app.post('/api/v1/calendar', async (req, res) => {
     catch (error) {
         res.status(500).json({ error: 'Failed to schedule content' });
     }
+});
+// ==================== TIKTOK RESEARCH API ENDPOINTS ====================
+app.get('/api/v1/tiktok/research/videos', async (req, res) => {
+    try {
+        const keyword = String(req.query.keyword || 'roblox dev');
+        const maxCount = req.query.maxCount ? parseInt(String(req.query.maxCount)) : 20;
+        const data = await tiktokService_js_1.TikTokResearchService.queryPublicVideos(keyword, maxCount);
+        res.json(data);
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message || 'Failed to fetch TikTok research videos' });
+    }
+});
+app.get('/api/v1/tiktok/research/comments', async (req, res) => {
+    try {
+        const videoId = String(req.query.videoId || '');
+        if (!videoId)
+            return res.status(400).json({ error: 'videoId query parameter required' });
+        const maxCount = req.query.maxCount ? parseInt(String(req.query.maxCount)) : 20;
+        const data = await tiktokService_js_1.TikTokResearchService.queryVideoComments(videoId, maxCount);
+        res.json(data);
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message || 'Failed to fetch TikTok video comments' });
+    }
+});
+// ==================== STATIC FRONTEND SERVING ====================
+const path_1 = __importDefault(require("path"));
+// Serve static frontend files from client-dist or client/dist
+const clientDistPath = path_1.default.join(process.cwd(), 'client-dist');
+const altClientDistPath = path_1.default.join(process.cwd(), 'src/client/dist');
+app.use(express_1.default.static(clientDistPath));
+app.use(express_1.default.static(altClientDistPath));
+app.get('*', (req, res) => {
+    if (req.path.startsWith('/api/')) {
+        return res.status(404).json({ error: 'API endpoint not found' });
+    }
+    const indexPath = path_1.default.join(clientDistPath, 'index.html');
+    res.sendFile(indexPath, (err) => {
+        if (err) {
+            res.sendFile(path_1.default.join(altClientDistPath, 'index.html'), (altErr) => {
+                if (altErr) {
+                    res.status(404).send('Frontend build not found. Please run npm run build.');
+                }
+            });
+        }
+    });
 });
 // ==================== START SERVER ====================
 app.listen(PORT, () => {

@@ -19,9 +19,10 @@ COPY package.json package-lock.json* ./
 RUN npm ci --production
 
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/src/client/dist ./src/client/dist
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 EXPOSE 3000
 
-CMD ["npx", "prisma", "db", "push", "--skip-generate", "&&", "node", "dist/server/index.js"]
+CMD ["sh", "-c", "npx prisma db push --skip-generate && node dist/server/index.js"]
