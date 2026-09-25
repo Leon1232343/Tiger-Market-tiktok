@@ -117,21 +117,25 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-cyan-400 font-mono flex flex-col selection:bg-cyan-500 selection:text-black">
       {/* Top Header Bar */}
-      <header className="border-b border-cyan-500/30 bg-black/80 backdrop-blur-md sticky top-0 z-50 px-6 py-3 flex items-center justify-between">
+      <header className="border-b border-[#00f0ff]/35 bg-[#010611]/95 backdrop-blur-xl sticky top-0 z-50 px-6 py-3.5 flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <div className="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></div>
-          <span className="font-bold tracking-widest text-lg text-cyan-300">JARVIS // TIGER MARKET INTELLIGENCE</span>
-          <span className="text-xs px-2 py-0.5 rounded border border-cyan-500/40 bg-cyan-950/40 text-cyan-400">SYSTEM ONLINE</span>
+          <div className="w-3 h-3 rounded-full bg-[#00f0ff] animate-ping"></div>
+          <span className="font-bold tracking-widest text-base text-[#00f0ff] drop-shadow-[0_0_10px_rgba(0,240,255,0.5)]">
+            JARVIS // TIGER MARKET INTELLIGENCE COMMAND
+          </span>
+          <span className="text-[10px] px-2 py-0.5 rounded border border-[#00f0ff]/40 bg-[#00f0ff]/10 text-[#00f0ff]">
+            SYSTEM ONLINE
+          </span>
         </div>
 
-        <div className="flex items-center space-x-6 text-sm">
-          <div className="flex items-center space-x-2 text-cyan-400/80">
-            <Radio className="w-4 h-4 text-cyan-400 animate-pulse" />
-            <span>AI ENGINE: ONLINE (OPENROUTER FREE)</span>
+        <div className="flex items-center space-x-6 text-xs">
+          <div className="flex items-center space-x-2 text-cyan-400/90">
+            <Radio className="w-4 h-4 text-[#00f0ff] animate-pulse" />
+            <span>AI ENGINE: GOOGLE GEMINI 3.5 FLASH-LITE</span>
           </div>
           <button
             onClick={fetchAllData}
-            className="flex items-center space-x-1 px-3 py-1 rounded border border-cyan-500/40 bg-cyan-950/30 hover:bg-cyan-900/40 transition text-cyan-300 text-xs"
+            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded border border-[#00f0ff]/40 bg-[#00f0ff]/10 hover:bg-[#00f0ff]/20 transition text-[#00f0ff] font-bold shadow-[0_0_15px_rgba(0,240,255,0.2)]"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span>SYNC DATA</span>
@@ -142,7 +146,8 @@ export default function App() {
       {/* Main Layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar Navigation */}
-        <aside className="w-64 border-r border-cyan-500/30 bg-black/90 p-4 flex flex-col space-y-1 overflow-y-auto">
+        <aside className="w-64 border-r border-[#00f0ff]/30 bg-[#020817]/95 p-4 flex flex-col space-y-1.5 overflow-y-auto">
+          <div className="text-[10px] text-cyan-600 uppercase tracking-widest px-3 py-1 mb-1">Navigation Modules</div>
           {[
             { id: 'dashboard', label: 'Dashboard', icon: Activity },
             { id: 'daily-ideas', label: 'Daily Ideas', icon: Lightbulb },
@@ -162,108 +167,114 @@ export default function App() {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`flex items-center space-x-3 px-3 py-2.5 rounded text-sm transition text-left ${
+                className={`flex items-center space-x-3 px-3.5 py-2.5 rounded text-xs transition text-left font-mono relative overflow-hidden ${
                   isActive
-                    ? 'bg-cyan-950/60 border border-cyan-500/60 text-cyan-300 shadow-[0_0_15px_rgba(0,255,255,0.2)]'
-                    : 'text-cyan-500 hover:text-cyan-300 hover:bg-cyan-950/20'
+                    ? 'bg-[#00f0ff]/15 border border-[#00f0ff]/70 text-[#00f0ff] shadow-[0_0_20px_rgba(0,240,255,0.3)] font-bold'
+                    : 'text-cyan-500 hover:text-cyan-300 hover:bg-[#00f0ff]/5 border border-transparent'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-300' : 'text-cyan-600'}`} />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-[#00f0ff]' : 'text-cyan-600'}`} />
                 <span className="tracking-wider">{item.label}</span>
+                {isActive && <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#00f0ff] shadow-[0_0_10px_#00f0ff]"></div>}
               </button>
             );
           })}
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto p-6 bg-gradient-to-br from-black via-cyan-950/10 to-black relative">
+        <main className="flex-1 overflow-y-auto p-6 bg-[#020617] relative">
           {/* Background grid overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00ffff08_1px,transparent_1px),linear-gradient(to_bottom,#00ffff08_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00f0ff06_1px,transparent_1px),linear-gradient(to_bottom,#00f0ff06_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none"></div>
 
           {/* ==================== TAB: DASHBOARD ==================== */}
           {activeTab === 'dashboard' && (
             <div className="space-y-6 relative z-10">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
-                {/* Left Side: Stats */}
-                <div className="space-y-4">
-                  <div className="jarvis-card p-4 rounded-lg">
-                    <h3 className="text-xs uppercase tracking-widest text-cyan-500 mb-3 flex items-center justify-between">
+              {/* Top Row: 3 Column HUD Command Layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+                {/* Left Panel: Metrics */}
+                <div className="space-y-4 flex flex-col">
+                  <div className="jarvis-card p-5 rounded-lg flex-1">
+                    <h3 className="text-xs uppercase tracking-widest text-[#00f0ff] mb-4 flex items-center justify-between font-bold">
                       <span>Performance Metrics</span>
-                      <Activity className="w-3.5 h-3.5 text-cyan-400" />
+                      <Activity className="w-4 h-4 text-[#00f0ff]" />
                     </h3>
-                    <div className="space-y-3">
-                      <div>
-                        <div className="text-xs text-cyan-600">TIKTOK FOLLOWERS</div>
-                        <div className="text-2xl font-bold text-cyan-300">{dashboardData?.stats?.followers?.toLocaleString() || '14,250'}</div>
+                    <div className="space-y-4">
+                      <div className="p-3 bg-black/40 rounded border border-[#00f0ff]/20">
+                        <div className="text-[10px] text-cyan-600 tracking-wider">TIKTOK FOLLOWERS</div>
+                        <div className="text-2xl font-bold text-cyan-200 mt-1">{dashboardData?.stats?.followers?.toLocaleString() || '14,250'}</div>
                       </div>
-                      <div>
-                        <div className="text-xs text-cyan-600">VIEWS (LAST 7 DAYS)</div>
-                        <div className="text-2xl font-bold text-cyan-300">{dashboardData?.stats?.viewsLast7Days?.toLocaleString() || '450,200'}</div>
+                      <div className="p-3 bg-black/40 rounded border border-[#00f0ff]/20">
+                        <div className="text-[10px] text-cyan-600 tracking-wider">VIEWS (LAST 7 DAYS)</div>
+                        <div className="text-2xl font-bold text-cyan-200 mt-1">{dashboardData?.stats?.viewsLast7Days?.toLocaleString() || '450,200'}</div>
                       </div>
-                      <div>
-                        <div className="text-xs text-cyan-600">ENGAGEMENT RATE</div>
-                        <div className="text-2xl font-bold text-cyan-300">{dashboardData?.stats?.engagementRate || '6.8%'}</div>
+                      <div className="p-3 bg-black/40 rounded border border-[#00f0ff]/20">
+                        <div className="text-[10px] text-cyan-600 tracking-wider">ENGAGEMENT RATE</div>
+                        <div className="text-2xl font-bold text-cyan-200 mt-1">{dashboardData?.stats?.engagementRate || '6.8%'}</div>
                       </div>
                     </div>
                   </div>
 
                   <div className="jarvis-card p-4 rounded-lg">
-                    <h3 className="text-xs uppercase tracking-widest text-cyan-500 mb-2">System Status</h3>
+                    <h3 className="text-xs uppercase tracking-widest text-[#00f0ff] mb-2 font-bold">System Status</h3>
                     <div className="space-y-2 text-xs">
-                      <div className="flex justify-between">
+                      <div className="flex justify-between py-1 border-b border-cyan-500/10">
                         <span className="text-cyan-600">Active Trends:</span>
-                        <span className="text-cyan-300">{dashboardData?.stats?.trendsCount || 0}</span>
+                        <span className="text-cyan-200 font-bold">{dashboardData?.stats?.trendsCount || 0}</span>
                       </div>
-                      <div className="flex justify-between">
+                      <div className="flex justify-between py-1 border-b border-cyan-500/10">
                         <span className="text-cyan-600">Exploding Spikes:</span>
-                        <span className="text-cyan-300 font-bold text-cyan-400">{dashboardData?.stats?.explodingTrendsCount || 0}</span>
+                        <span className="text-[#00f0ff] font-bold">{dashboardData?.stats?.explodingTrendsCount || 0}</span>
                       </div>
-                      <div className="flex justify-between">
+                      <div className="flex justify-between py-1">
                         <span className="text-cyan-600">Monitored Competitors:</span>
-                        <span className="text-cyan-300">{dashboardData?.stats?.competitorsCount || 0}</span>
+                        <span className="text-cyan-200 font-bold">{dashboardData?.stats?.competitorsCount || 0}</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Center: JARVIS Circular Core Interface */}
-                <div className="flex flex-col items-center justify-center p-6">
-                  <div className="relative w-64 h-64 flex items-center justify-center">
-                    {/* Rotating outer ring */}
-                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-cyan-500/40 animate-radar pointer-events-none"></div>
-                    {/* Inner glowing pulse ring */}
-                    <div className="absolute inset-4 rounded-full border border-cyan-400/60 animate-pulse-slow"></div>
-                    <div className="absolute inset-8 rounded-full bg-cyan-950/30 backdrop-blur-md border border-cyan-500/50 flex flex-col items-center justify-center text-center p-4 shadow-[0_0_30px_rgba(0,255,255,0.3)]">
-                      <Cpu className="w-10 h-10 text-cyan-300 mb-2 animate-pulse" />
-                      <div className="text-sm font-bold text-cyan-200 tracking-wider">JARVIS CORE</div>
-                      <div className="text-[10px] text-cyan-500 mt-1">AI INTELLIGENCE ACTIVE</div>
-                      <div className="mt-3 text-[11px] px-2 py-0.5 bg-cyan-900/40 border border-cyan-500/50 rounded text-cyan-300">
+                {/* Center Panel: Cinematic JARVIS Core HUD */}
+                <div className="jarvis-card p-6 rounded-lg flex flex-col items-center justify-center relative overflow-hidden min-h-[380px]">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,240,255,0.08)_0%,transparent_70%)] pointer-events-none"></div>
+
+                  <div className="relative w-64 h-64 flex items-center justify-center my-4">
+                    {/* Outer radar sweep ring */}
+                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-[#00f0ff]/40 animate-radar pointer-events-none"></div>
+                    {/* Middle glowing ring */}
+                    <div className="absolute inset-6 rounded-full border border-[#00f0ff]/60 animate-pulse-slow"></div>
+                    {/* Inner core matrix */}
+                    <div className="absolute inset-12 rounded-full bg-[#020817]/90 backdrop-blur-xl border-2 border-[#00f0ff] flex flex-col items-center justify-center text-center p-4 shadow-[0_0_40px_rgba(0,240,255,0.4)]">
+                      <Cpu className="w-12 h-12 text-[#00f0ff] mb-2 animate-pulse" />
+                      <div className="text-sm font-bold text-white tracking-widest">JARVIS CORE</div>
+                      <div className="text-[10px] text-[#00f0ff] mt-1 font-bold">ONLINE & ACTIVE</div>
+                      <div className="mt-3 text-[10px] px-2.5 py-1 bg-[#00f0ff]/20 border border-[#00f0ff]/60 rounded text-[#00f0ff] font-bold">
                         3 IDEAS READY
                       </div>
                     </div>
                   </div>
-                  <div className="text-center mt-4">
-                    <span className="text-xs text-cyan-500 tracking-widest uppercase">Autonomous Social Radar</span>
+
+                  <div className="text-center relative z-10 mt-2">
+                    <span className="text-xs text-[#00f0ff] tracking-widest uppercase font-bold">Autonomous Social Intelligence</span>
                   </div>
                 </div>
 
-                {/* Right Side: Trends & Intelligence Alerts */}
-                <div className="space-y-4">
-                  <div className="jarvis-card p-4 rounded-lg">
-                    <h3 className="text-xs uppercase tracking-widest text-cyan-500 mb-3 flex items-center justify-between">
+                {/* Right Panel: Intelligence Alerts */}
+                <div className="space-y-4 flex flex-col">
+                  <div className="jarvis-card p-5 rounded-lg flex-1">
+                    <h3 className="text-xs uppercase tracking-widest text-[#00f0ff] mb-4 flex items-center justify-between font-bold">
                       <span>Intelligence Alerts</span>
-                      <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                      <Zap className="w-4 h-4 text-[#00f0ff]" />
                     </h3>
                     <div className="space-y-3">
                       {dashboardData?.topTrends?.map((trend: any) => (
-                        <div key={trend.id} className="p-2.5 rounded bg-cyan-950/30 border border-cyan-500/30 text-xs">
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="font-bold text-cyan-300">{trend.name}</span>
-                            <span className="px-1.5 py-0.5 rounded text-[10px] bg-red-950/60 border border-red-500/50 text-red-400">
+                        <div key={trend.id} className="p-3 rounded bg-black/50 border border-[#00f0ff]/30 text-xs hover:border-[#00f0ff]/70 transition">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="font-bold text-cyan-200">{trend.name}</span>
+                            <span className="px-2 py-0.5 rounded text-[10px] bg-red-950/80 border border-red-500/60 text-red-400 font-bold">
                               {trend.status}
                             </span>
                           </div>
-                          <p className="text-cyan-500 line-clamp-1">{trend.whyTrending}</p>
+                          <p className="text-cyan-400/80 line-clamp-2">{trend.whyTrending}</p>
                         </div>
                       ))}
                     </div>
@@ -271,32 +282,33 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Bottom Section: Prominent Top 3 Selected Trends around/below center */}
+              {/* Bottom Section: Prominent Top 3 Selected Content Recommendations */}
               <div className="jarvis-card p-6 rounded-lg">
-                <h3 className="text-sm uppercase tracking-widest text-cyan-300 mb-4 flex items-center space-x-2">
-                  <TrendingUp className="w-4 h-4 text-cyan-400" />
+                <h3 className="text-sm uppercase tracking-widest text-[#00f0ff] mb-5 flex items-center space-x-2 font-bold">
+                  <TrendingUp className="w-4 h-4 text-[#00f0ff]" />
                   <span>Today's Top 3 Selected Content Recommendations</span>
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   {dashboardData?.todayIdeas?.map((idea: any, idx: number) => (
-                    <div key={idea.id} className="p-4 rounded border border-cyan-500/40 bg-black/60 flex flex-col justify-between">
+                    <div key={idea.id} className="p-5 rounded border border-[#00f0ff]/40 bg-black/70 flex flex-col justify-between hover:border-[#00f0ff] transition group shadow-[0_0_20px_rgba(0,240,255,0.1)]">
                       <div>
-                        <div className="flex items-center justify-between text-xs mb-2">
-                          <span className="text-cyan-500">IDEA #{idx + 1} // {idea.contentType}</span>
-                          <span className="text-cyan-300 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-500/30">
+                        <div className="flex items-center justify-between text-xs mb-3">
+                          <span className="text-[#00f0ff] font-bold">IDEA #{idx + 1} // {idea.contentType}</span>
+                          <span className="text-cyan-200 bg-[#00f0ff]/20 px-2.5 py-0.5 rounded border border-[#00f0ff]/40 font-bold">
                             Adv: {idea.advertising}
                           </span>
                         </div>
-                        <h4 className="font-bold text-cyan-200 text-sm mb-2">{idea.title}</h4>
-                        <p className="text-xs text-cyan-400/90 mb-3">{idea.descriptionDe}</p>
+                        <h4 className="font-bold text-white text-sm mb-2 group-hover:text-[#00f0ff] transition">{idea.title}</h4>
+                        <p className="text-xs text-cyan-400/90 mb-4 line-clamp-3">{idea.descriptionDe}</p>
                       </div>
-                      <div className="flex items-center justify-between pt-3 border-t border-cyan-500/20 text-xs">
-                        <span className="text-cyan-500">Trend Score: {idea.trendScore}/100</span>
+                      <div className="flex items-center justify-between pt-3 border-t border-[#00f0ff]/20 text-xs">
+                        <span className="text-cyan-500">Trend Score: <strong className="text-white">{idea.trendScore}/100</strong></span>
                         <button
                           onClick={() => setActiveTab('daily-ideas')}
-                          className="text-cyan-300 hover:underline"
+                          className="text-[#00f0ff] hover:underline font-bold flex items-center space-x-1"
                         >
-                          View Details →
+                          <span>View Details</span>
+                          <span>→</span>
                         </button>
                       </div>
                     </div>
