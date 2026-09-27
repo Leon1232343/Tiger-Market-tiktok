@@ -1,2 +1,42 @@
-# graft's local graph cache — regenerable, not committed (run `graft build`).
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+src/client/dist/
+build/
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+prisma/dev.db
+
+# Environment
+.env
+.env.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+.cache/
+
+# Graft
 /graft/
+

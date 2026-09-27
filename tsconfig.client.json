@@ -1,12 +1,12 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "./src/client/dist",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "allowImportingTsExtensions": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/client/**/*"],
   "exclude": ["node_modules", "dist"]
 }

@@ -4,20 +4,22 @@
 
 @layer base {
   body {
-    @apply bg-[#030712] text-cyan-400 font-mono antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-black;
+    @apply bg-[#020617] text-cyan-400 font-mono antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-black;
   }
 }
 
-/* Cinematic Sci-Fi JARVIS HUD Styling matching reference */
-.jarvis-hud-border {
+/* JARVIS HUD SCI-FI STYLING - Main Design System */
+.jarvis-hud {
+  background: rgba(3, 11, 24, 0.9);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 240, 255, 0.4);
-  box-shadow: 0 0 25px rgba(0, 240, 255, 0.15), inset 0 0 15px rgba(0, 240, 255, 0.08);
+  box-shadow:
+    0 0 25px rgba(0, 240, 255, 0.15),
+    inset 0 0 15px rgba(0, 240, 255, 0.08);
   position: relative;
-  background: rgba(3, 11, 24, 0.85);
-  backdrop-filter: blur(16px);
 }
 
-.jarvis-hud-border::before {
+.jarvis-hud::before {
   content: '';
   position: absolute;
   top: -1px;
@@ -28,7 +30,7 @@
   border-left: 2px solid #00f0ff;
 }
 
-.jarvis-hud-border::after {
+.jarvis-hud::after {
   content: '';
   position: absolute;
   bottom: -1px;
@@ -39,39 +41,119 @@
   border-right: 2px solid #00f0ff;
 }
 
-.jarvis-card {
-  background: rgba(4, 14, 32, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 240, 255, 0.35);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 240, 255, 0.05);
+/* JARVIS Circular Interface */
+.jarvis-core {
+  background: radial-gradient(circle at center, rgba(0, 240, 255, 0.1) 0%, rgba(3, 11, 24, 0.95) 70%);
+  backdrop-filter: blur(24px);
+  border: 2px solid rgba(0, 240, 255, 0.6);
+  box-shadow:
+    0 0 40px rgba(0, 240, 255, 0.3),
+    inset 0 0 30px rgba(0, 240, 255, 0.1);
   position: relative;
 }
 
-.jarvis-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 6px;
-  height: 6px;
-  border-top: 1px solid #00f0ff;
-  border-left: 1px solid #00f0ff;
-}
-
+/* Radar Sweep Animation */
 @keyframes radar-sweep {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-.animate-radar {
+.radar-sweep {
   animation: radar-sweep 8s linear infinite;
 }
 
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.5; transform: scale(0.97); }
+/* Pulse Animation */
+@keyframes hud-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.97); }
   50% { opacity: 1; transform: scale(1.03); }
 }
 
-.animate-pulse-slow {
-  animation: pulse-glow 4s ease-in-out infinite;
+.hud-pulse {
+  animation: hud-pulse 4s ease-in-out infinite;
+}
+
+/* Glowing text */
+.glow-cyan {
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.8), 0 0 20px rgba(0, 240, 255, 0.4);
+}
+
+.glow-white {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* Panel variants */
+.jarvis-panel-left {
+  background: linear-gradient(135deg, rgba(3, 11, 24, 0.95) 0%, rgba(4, 14, 32, 0.9) 100%);
+  border-left: 2px solid rgba(0, 240, 255, 0.5);
+  border-top: 1px solid rgba(0, 240, 255, 0.3);
+  border-right: 1px solid rgba(0, 240, 255, 0.2);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.jarvis-panel-right {
+  background: linear-gradient(225deg, rgba(3, 11, 24, 0.95) 0%, rgba(4, 14, 32, 0.9) 100%);
+  border-right: 2px solid rgba(0, 240, 255, 0.5);
+  border-top: 1px solid rgba(0, 240, 255, 0.3);
+  border-left: 1px solid rgba(0, 240, 255, 0.2);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.jarvis-panel-bottom {
+  background: linear-gradient(180deg, rgba(3, 11, 24, 0.95) 0%, rgba(4, 14, 32, 0.9) 100%);
+  border-bottom: 2px solid rgba(0, 240, 255, 0.5);
+  border-top: 1px solid rgba(0, 240, 255, 0.3);
+  border-left: 1px solid rgba(0, 240, 255, 0.2);
+  border-right: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+/* Tech decorations */
+.tech-grid {
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+}
+
+.tech-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.5), transparent);
+}
+
+/* Status indicators */
+.status-pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Button styling */
+.btn-hud {
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: #00f0ff;
+  text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+  transition: all 0.2s ease;
+}
+
+.btn-hud:hover {
+  background: rgba(0, 240, 255, 0.2);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(3, 11, 24, 0.9);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.5);
 }
