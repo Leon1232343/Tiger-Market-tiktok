@@ -18,7 +18,7 @@ RUN npx prisma generate
 RUN npx tsc --project tsconfig.server.json
 
 # Build client
-RUN cd src/client && npm install && npm run build
+RUN cd src/client && rm -rf dist && npm install && npm run build
 
 FROM node:22-alpine AS production
 
@@ -31,7 +31,7 @@ RUN npm ci --production
 # Copy built server
 COPY --from=builder /app/dist ./dist
 
-# Copy built client
+# Copy built client (use the latest client-dist created above)
 COPY --from=builder /app/src/client/dist ./src/client/dist
 
 # Copy prisma
