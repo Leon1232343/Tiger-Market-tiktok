@@ -27,7 +27,6 @@
     "lucide-react": "^0.468.0"
   },
   "devDependencies": {
-    "@prisma/cli": "5.22.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^22.10.1",
