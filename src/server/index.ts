@@ -33,7 +33,7 @@ app.get('/api/v1/health', (req, res) => {
   });
 });
 
-// Client assets check
+// Client assets check - MUST be before catch-all route
 app.get('/api/v1/health/client', (req, res) => {
   const clientDistPath = path.join(process.cwd(), 'src/client/dist');
   const fs = require('fs');
