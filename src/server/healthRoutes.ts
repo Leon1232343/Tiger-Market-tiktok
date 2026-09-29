@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
+import fs from 'fs';
 
 /**
  * Health check routes
@@ -22,7 +23,6 @@ export function setupHealthRoutes(app: express.Application) {
     const clientDistPath = path.join(process.cwd(), 'src/client/dist');
 
     try {
-      const fs = require('fs');
       const indexHtmlPath = path.join(clientDistPath, 'index.html');
       const jsPath = path.join(clientDistPath, 'assets', 'index-BZtC1Afx.js');
       const cssPath = path.join(clientDistPath, 'assets', 'index-CbijFkdp.css');
