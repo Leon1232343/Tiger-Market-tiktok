@@ -1,3 +1,4 @@
+import express, { Request, Response } from 'express';
 import path from 'path';
 
 /**
@@ -5,9 +6,9 @@ import path from 'path';
  * Separate file to ensure proper compilation
  */
 
-export function setupHealthRoutes(app: any) {
+export function setupHealthRoutes(app: express.Application) {
   // Health check
-  app.get('/api/v1/health', (req, res) => {
+  app.get('/api/v1/health', (req: Request, res: Response) => {
     res.json({
       status: 'ok',
       timestamp: new Date().toISOString(),
@@ -17,7 +18,7 @@ export function setupHealthRoutes(app: any) {
   });
 
   // Client assets check
-  app.get('/api/v1/health/client', (req, res) => {
+  app.get('/api/v1/health/client', (req: Request, res: Response) => {
     const clientDistPath = path.join(process.cwd(), 'src/client/dist');
 
     try {
