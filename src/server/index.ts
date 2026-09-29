@@ -661,8 +661,6 @@ app.get('/api/v1/tiktok/research/comments', async (req, res) => {
 
 // ==================== STATIC FRONTEND SERVING ====================
 
-import path from 'path';
-
 const clientDistPath = path.join(process.cwd(), 'src/client/dist');
 
 app.use(express.static(clientDistPath));
