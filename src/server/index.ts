@@ -7,7 +7,6 @@ import cron from 'node-cron';
 import axios from 'axios';
 import { TikTokResearchService } from './tiktokService.js';
 import { AIResearchService } from './aiService.js';
-import { setupHealthRoutes } from './healthRoutes.js';
 
 dotenv.config();
 
@@ -22,8 +21,35 @@ app.use(express.json());
 // Initialize AI Research Service
 const aiService = new AIResearchService();
 
-// Setup Health Check Routes
-setupHealthRoutes(app);
+// Setup Health Check Routes - INLINE DEFINITION TO ENSURE COMPILATION
+app.get('/api/v1/health/client', (req: any, res: any) => {
+  const clientDistPath = path.join(process.cwd(), 'src/client/dist');
+
+  try {
+    const fs = require('fs');
+    const indexHtmlPath = path.join(clientDistPath, 'index.html');
+    const jsPath = path.join(clientDistPath, 'assets', 'index-BZtC1Afx.js');
+    const cssPath = path.join(clientDistPath, 'assets', 'index-CbijFkdp.css');
+
+    const assets = {
+      indexHtml: fs.existsSync(indexHtmlPath) ? '✓ exists' : '✗ missing',
+      jsFile: fs.existsSync(jsPath) ? '✓ exists' : '✗ missing',
+      cssFile: fs.existsSync(cssPath) ? '✓ exists' : '✗ missing',
+      clientDistPath
+    };
+
+    res.json({
+      ...assets,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      error: 'Failed to check client assets',
+      details: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
 
 // ==================== DASHBOARD DATA ====================
 
