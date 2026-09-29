@@ -22,7 +22,7 @@ app.use(express.json());
 // Initialize AI Research Service
 const aiService = new AIResearchService();
 
-// Setup Health Check Routes
+// Setup Health Check Routes - INLINE CALL TO ENSURE COMPILATION
 healthRoutes(app);
 
 // ==================== DASHBOARD DATA ====================
