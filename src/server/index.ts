@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 import cron from 'node-cron';
 import axios from 'axios';
+import path from 'path';
 import { TikTokResearchService } from './tiktokService.js';
 import { AIResearchService } from './aiService.js';
 
@@ -29,6 +30,27 @@ app.get('/api/v1/health', (req, res) => {
     timestamp: new Date().toISOString(),
     service: 'Tiger Market JARVIS Intelligence',
     version: '1.0.0'
+  });
+});
+
+// Client assets check
+app.get('/api/v1/health/client', (req, res) => {
+  const clientDistPath = path.join(process.cwd(), 'src/client/dist');
+  const fs = require('fs');
+  const indexHtmlPath = path.join(clientDistPath, 'index.html');
+  const jsPath = path.join(clientDistPath, 'assets', 'index-BZtC1Afx.js');
+  const cssPath = path.join(clientDistPath, 'assets', 'index-CbijFkdp.css');
+
+  const assets = {
+    indexHtml: fs.existsSync(indexHtmlPath) ? '✓ exists' : '✗ missing',
+    jsFile: fs.existsSync(jsPath) ? '✓ exists' : '✗ missing',
+    cssFile: fs.existsSync(cssPath) ? '✓ exists' : '✗ missing',
+    clientDistPath
+  };
+
+  res.json({
+    ...assets,
+    timestamp: new Date().toISOString()
   });
 });
 
