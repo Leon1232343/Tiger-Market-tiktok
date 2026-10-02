@@ -7,6 +7,7 @@ import cron from 'node-cron';
 import axios from 'axios';
 import { TikTokResearchService } from './tiktokService.js';
 import { AIResearchService } from './aiService.js';
+import { setupSimpleHealth } from './simple-health.js';
 
 dotenv.config();
 
@@ -21,21 +22,8 @@ app.use(express.json());
 // Initialize AI Research Service
 const aiService = new AIResearchService();
 
-// Health Check Client Assets - INLINE DEFINITION
-app.get('/api/v1/health/client', (req: any, res: any) => {
-  const clientDistPath = path.join(process.cwd(), 'src/client/dist');
-  const fs = require('fs');
-  const indexHtml = path.join(clientDistPath, 'index.html');
-  const js = path.join(clientDistPath, 'assets', 'index-BZtC1Afx.js');
-  const css = path.join(clientDistPath, 'assets', 'index-CbijFkdp.css');
-  res.json({
-    indexHtml: fs.existsSync(indexHtml) ? '✓' : '✗',
-    js: fs.existsSync(js) ? '✓' : '✗',
-    css: fs.existsSync(css) ? '✓' : '✗',
-    path: clientDistPath,
-    timestamp: new Date().toISOString()
-  });
-});
+// Setup Simple Health Check
+setupSimpleHealth(app);
 
 // ==================== DASHBOARD DATA ====================
 
@@ -640,6 +628,27 @@ app.get('/api/v1/tiktok/research/comments', async (req, res) => {
     console.error('TikTok comments error:', error);
     res.status(500).json({ error: error.message || 'Failed to fetch TikTok video comments' });
   }
+});
+
+// Health Check Client Assets - MUST BE BEFORE CATCH-ALL ROUTE
+app.get('/api/v1/health/client', (req, res) => {
+  const clientDistPath = path.join(process.cwd(), 'src/client/dist');
+  const fs = require('fs');
+  const indexHtml = path.join(clientDistPath, 'index.html');
+  const js = path.join(clientDistPath, 'assets', 'index-BZtC1Afx.js');
+  const css = path.join(clientDistPath, 'assets', 'index-CbijFkdp.css');
+
+  const assets = {
+    indexHtml: fs.existsSync(indexHtml) ? '✓' : '✗',
+    js: fs.existsSync(js) ? '✓' : '✗',
+    css: fs.existsSync(css) ? '✓' : '✗',
+    clientDistPath: clientDistPath
+  };
+
+  res.json({
+    ...assets,
+    timestamp: new Date().toISOString()
+  });
 });
 
 // ==================== STATIC FRONTEND SERVING ====================
