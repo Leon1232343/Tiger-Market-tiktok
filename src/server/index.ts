@@ -7,7 +7,6 @@ import cron from 'node-cron';
 import axios from 'axios';
 import { TikTokResearchService } from './tiktokService.js';
 import { AIResearchService } from './aiService.js';
-import { setupSimpleHealth } from './simple-health.js';
 
 dotenv.config();
 
@@ -21,6 +20,19 @@ app.use(express.json());
 
 // Initialize AI Research Service
 const aiService = new AIResearchService();
+
+// Health Check - EINFACH UND KLAR
+app.get('/api/v1/health/client', (req, res) => {
+  const clientDistPath = path.join(process.cwd(), 'src/client/dist');
+  const fs = require('fs');
+  res.json({
+    indexHtml: fs.existsSync(path.join(clientDistPath, 'index.html')) ? 'OK' : 'MISSING',
+    js: fs.existsSync(path.join(clientDistPath, 'assets/index-BZtC1Afx.js')) ? 'OK' : 'MISSING',
+    css: fs.existsSync(path.join(clientDistPath, 'assets/index-CbijFkdp.css')) ? 'OK' : 'MISSING',
+    path: clientDistPath,
+    timestamp: new Date().toISOString()
+  });
+});
 
 // Setup Simple Health Check
 setupSimpleHealth(app);
